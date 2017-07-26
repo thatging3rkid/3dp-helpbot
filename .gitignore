@@ -99,3 +99,10 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# PyCharm files
+.idea/
+
+# Config files
+config.py
+data.dat
