@@ -5,6 +5,7 @@ Tries to help users by replying to them with helpful links
 :author: Connor Henley, @thatging3rkid
 """
 import time
+import pickle
 import praw
 import praw.models
 
@@ -29,15 +30,30 @@ class Bot:
                           client_secret=config.client_secret, user_agent="3dprinting_helpbot " + version)
 
         # Initialize data
-        self.__viewed = []
+        try:
+            df = open("data.dat", "rb")
+            self.__viewed = pickle.load(df)
+            df.close()
+        except:
+            self.__viewed = []
 
         # Run the bot
+        i = 0
         while True:
             self.__run()
 
-            if len(self.__viewed) > 100:
-                for i in range(0, 10):
+            if len(self.__viewed) > 200:
+                for i in range(0, 15):
                     self.__viewed.remove(0)
+
+            # Write the viewed ids to disk every 5 iterations
+            if i == 5:
+                i = 0
+                df = open("data.dat", "wb")
+                pickle.dump(self.__viewed, df)
+                df.close()
+            else:
+                i += 1
         pass
 
     def __run(self):
@@ -46,7 +62,7 @@ class Bot:
         """
 
         # Get new posts
-        for post in self.__bot.subreddit('3dprinting_helpbot').new(limit = 10):
+        for post in self.__bot.subreddit('3dprinting_helpbot').new(limit = 20):
             # Only check the post once
             if post.id not in self.__viewed:
                 self.__viewed.append(post.id)
@@ -79,7 +95,7 @@ class Bot:
                     item.reply("I'm sorry to hear that. You can leave feedback [here](https://reddit.com/r/3dprinting_helpbot)." + DEBUG_INFO)
         self.__bot.inbox.mark_read(read)
 
-        time.sleep(2) # Conform to Reddit's API; reduce spam and processing load
+        time.sleep(4) # Conform to Reddit's API; reduce spam and processing load
     pass
 
 def main():
