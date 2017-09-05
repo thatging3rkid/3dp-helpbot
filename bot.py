@@ -4,14 +4,18 @@ Tries to help users by replying to them with helpful links
 
 :author: Connor Henley, @thatging3rkid
 """
+import os
+import sys
 import time
 import pickle
 import praw
 import praw.models
+import datetime
+import traceback
 
 import config
 
-version = "v0.1"
+version = "v0.2"
 
 DEBUG_INFO = "\n\n*****\nI am a bot | /r/3DPrinting Help Bot by " \
              "[/u/thatging3rkid](https://reddit.com/user/thatging3rkid) " + version + " | Report bugs [here]" \
@@ -28,6 +32,7 @@ class Bot:
         # Login
         self.__bot = praw.Reddit(username=config.username, password=config.password, client_id=config.client_id,
                           client_secret=config.client_secret, user_agent="3dprinting_helpbot " + version)
+        print("Logged in...")
 
         # Initialize data
         try:
@@ -40,20 +45,23 @@ class Bot:
         # Run the bot
         i = 0
         while True:
-            self.__run()
+            try:
+                self.__run()
 
-            if len(self.__viewed) > 200:
-                for i in range(0, 15):
-                    self.__viewed.remove(0)
+                if len(self.__viewed) > 200:
+                    for i in range(0, 15):
+                        self.__viewed.remove(0)
 
-            # Write the viewed ids to disk every 5 iterations
-            if i == 5:
-                i = 0
-                df = open("data.dat", "wb")
-                pickle.dump(self.__viewed, df)
-                df.close()
-            else:
-                i += 1
+                # Write the viewed ids to disk every 5 iterations
+                if i == 5:
+                    i = 0
+                    df = open("data.dat", "wb")
+                    pickle.dump(self.__viewed, df)
+                    df.close()
+                else:
+                    i += 1
+            except Exception:
+                traceback.print_exc()
         pass
 
     def __run(self):
@@ -62,7 +70,7 @@ class Bot:
         """
 
         # Get new posts
-        for post in self.__bot.subreddit('3dprinting_helpbot').new(limit = 20):
+        for post in self.__bot.subreddit('3dprinting').new(limit = 20):
             # Only check the post once
             if post.id not in self.__viewed:
                 self.__viewed.append(post.id)
@@ -95,10 +103,14 @@ class Bot:
                     item.reply("I'm sorry to hear that. You can leave feedback [here](https://reddit.com/r/3dprinting_helpbot)." + DEBUG_INFO)
         self.__bot.inbox.mark_read(read)
 
-        time.sleep(4) # Conform to Reddit's API; reduce spam and processing load
+        time.sleep(6) # Conform to Reddit's API; reduce spam and processing load
     pass
 
 def main():
+    print("Starting /u/3dprinting_helpbot...")
     Bot()
 
+os.chdir("/home/user/3dp-helpbot")
+sys.stdout = open("logs/log-" + datetime.datetime.now().strftime("%m-%d-%Y_%X") + ".txt", "w+")
+sys.stderr = sys.stdout
 main()
