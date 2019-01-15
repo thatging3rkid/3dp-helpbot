@@ -21,7 +21,8 @@ DEBUG_INFO = "\n\n*****\nI am a bot | /r/3DPrinting Help Bot by " \
              "[/u/thatging3rkid](https://reddit.com/user/thatging3rkid) " + version + " | Report bugs [here]" \
              "(https://reddit.com/r/3dprinting_helpbot) | [GitHub](https://github.com/thatging3rkid/3dp-helpbot)"
 KEYWORDS = ["3d modeling program", "cad program", "looking for cad program", "looking for modeling program",
-            "3d modeling software"]
+            "3d modeling software", "software for designing 3d models", "software to make 3d models", "free cad software",
+             "best free cad software", "software for 3d modeling"]
 
 # A class isn't necessary, but globals in Python are weird
 class Bot:
