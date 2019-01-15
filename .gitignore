@@ -106,3 +106,6 @@ ENV/
 # Config files
 config.py
 data.dat
+
+# log files
+logs/
