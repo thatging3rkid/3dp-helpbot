@@ -19,7 +19,7 @@ import config
 
 version = ""
 try:
-    version = subprocess.check_output(["git", "describe", "--tags"]).strip()
+    version = subprocess.check_output(["git", "describe", "--tags"]).strip().decode("utf-8")
 except:
     version = "unknown"
 
