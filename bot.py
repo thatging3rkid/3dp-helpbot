@@ -31,6 +31,15 @@ KEYWORDS = ["3d modeling program", "cad program", "cad software", "looking for m
             "3d modeling software", "software for designing 3d models", "software to make 3d models",
             "software for 3d modeling", "3d modelling program", "3d editing software", "3d editing program"]
 
+def resp_modeling():
+    """
+    Generates the response when a user asks for modeling help
+    """
+    return "[Here](https://reddit.com/r/3Dprinting/wiki/index#wiki_what_should_i_do_to_start_modelling_" +
+            "things_to_print.3F) is the wiki entry of CAD/3D modeling software.\n\n[Here](https://reddit.com/r/" +
+            "3Dprinting/comments/bm6wq2/so_you_want_to_learn_x_program/) is a guide containing resources to" +
+            " learn most CAD/3D modeling software." + DEBUG_INFO
+
 
 # A class isn't necessary, but globals in Python are weird
 class Bot:
@@ -85,8 +94,7 @@ class Bot:
                 # See if a post needs a reply
                 for word in KEYWORDS:
                     if word in post.title.lower() or word in post.selftext.lower():
-                        post.reply("[Here](https://www.reddit.com/r/3Dprinting/wiki/index#wiki_what_should_i_do_to_start_modelling_things_to_print.3F)"
-                                   " is a list of CAD/3D modeling software" + DEBUG_INFO)
+                        post.reply(resp_modeling())
                         break
             pass
 
@@ -100,8 +108,7 @@ class Bot:
                 # Check the contents of the inbox item
                 if "/u/3dprinting_helpbot modeling" in item.body.lower():
                     # Bot has been summoned, give out info
-                    item.reply("[Here](https://www.reddit.com/r/3Dprinting/wiki/index#wiki_what_should_i_do_to_start_modelling_things_to_print.3F)"
-                        " is a list of CAD/3D modeling software" + DEBUG_INFO)
+                    item.reply(resp_modeling())
                 elif "good bot" == item.body.lower().strip():
                     # Someone called the bot a good bot!
                     item.reply("Thanks!" + DEBUG_INFO)
@@ -110,7 +117,7 @@ class Bot:
                     item.reply("I'm sorry to hear that. You can leave feedback [here](https://reddit.com/r/3dprinting_helpbot)." + DEBUG_INFO)
         self.__bot.inbox.mark_read(read)
 
-        time.sleep(6)  # Conform to Reddit's API; reduce spam and processing load
+        time.sleep(4)  # Conform to Reddit's API; reduce spam and processing load
     pass
 
 def main():
