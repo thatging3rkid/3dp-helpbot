@@ -35,9 +35,9 @@ def resp_modeling():
     """
     Generates the response when a user asks for modeling help
     """
-    return "[Here](https://reddit.com/r/3Dprinting/wiki/index#wiki_what_should_i_do_to_start_modelling_" +
-            "things_to_print.3F) is the wiki entry of CAD/3D modeling software.\n\n[Here](https://reddit.com/r/" +
-            "3Dprinting/comments/bm6wq2/so_you_want_to_learn_x_program/) is a guide containing resources to" +
+    return "[Here](https://reddit.com/r/3Dprinting/wiki/index#wiki_what_should_i_do_to_start_modelling_" + \
+            "things_to_print.3F) is the wiki entry of CAD/3D modeling software.\n\n[Here](https://reddit.com/r/" + \
+            "3Dprinting/comments/bm6wq2/so_you_want_to_learn_x_program/) is a guide containing resources to" + \
             " learn most CAD/3D modeling software." + DEBUG_INFO
 
 
